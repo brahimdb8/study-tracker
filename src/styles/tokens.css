@@ -1,0 +1,217 @@
+/* رموز التصميم — مصدر الألوان الوحيد (الثيمان الفاتح والداكن).
+   - الافتراضي داكن؛ «تلقائي» يتبع prefers-color-scheme؛ [data-theme] يتجاوز النظام.
+   - كتلتا الفاتح متطابقتان عمداً (CSS لا يشارك الإعلانات بين media وselector)،
+     ويحرسهما tests/tokens.test.js مع حدود التباين (4.5:1 للنص، 3:1 للمكوّنات).
+   - لوحات الرسوم تحققت بـ validate_palette في الوضعين (انظر README). */
+:root {
+  color-scheme: dark;
+
+  /* الأسطح والنص */
+  --bg: #13111f;
+  --panel: #1d1a30;
+  --border: #342f50;
+  --border-strong: #766c9a;
+  --text: #f7f2ea;
+  --muted: #b9afcb;
+  --faint: #a399ba;
+  --ink2: #d9d1e6;
+
+  /* التمييز والأزرار */
+  --accent: #38bdf8;
+  --accent-strong: #0284c7;      /* تعبئات (شريط التقدم) */
+  --btn-primary: #0e7490;        /* خلفية زر بنص أبيض */
+  --btn-warning: #a16207;
+  --btn-danger: #b91c1c;
+  --on-accent: #ffffff;
+  --good: #22c55e;
+  --warn: #f59e0b;
+  --bad: #f87171;
+  --warn-wash: rgba(245, 158, 11, 0.12);
+  --glow: rgba(92, 200, 245, 0.35);
+  --shadow: 0 12px 30px rgba(6, 4, 20, 0.5);
+  --shadow-pop: 0 8px 22px rgba(6, 4, 20, 0.6);
+
+  /* الإشعارات والتلميح */
+  --toast-bg: #2f2a52;
+  --toast-fg: #f7f2ea;
+  --toast-ok-bg: #166534;
+  --toast-err-bg: #991b1b;
+  --tip-bg: #0d0b1a;
+
+  /* حالات اليوم: خلفية / نص / إطار (الإطار يُستعمل تعبئةً صلبة في الخريطة والمفاتيح) */
+  --st-ok-bg: #166534;      --st-ok-fg: #ffffff;      --st-ok-bd: #22c55e;
+  --st-comp-bg: #854d0e;    --st-comp-fg: #ffffff;    --st-comp-bd: #f59e0b;
+  --st-bad-bg: #991b1b;     --st-bad-fg: #ffffff;     --st-bad-bd: #ef4444;
+  --st-frozen-bg: #1e3a5f;  --st-frozen-fg: #ffffff;  --st-frozen-bd: #22d3ee;
+  --st-excused-bg: #4c1d95; --st-excused-fg: #ffffff; --st-excused-bd: #a78bfa;
+  /* رمز الحالة فوق التعبئة الصلبة (الخريطة السنوية) */
+  --st-ok-on: #0b1220; --st-comp-on: #0b1220; --st-bad-on: #0b1220; --st-frozen-on: #0b1220; --st-excused-on: #0b1220;
+  --delta-up: #4ade80;      --delta-up-bd: #166534;
+  --delta-down: #fbbf24;    --delta-down-bd: #854d0e;
+
+  /* الرسوم */
+  --ring-focus: #3987e5;
+  --ring-break: #c98500;
+  --ring-track: #342f50;
+  --c-morning: #c98500;
+  --c-evening: #9085e9;
+  --c-main: #38bdf8;
+  --c-actual: #38bdf8;
+  --c-target: #a99fc0;
+  --c-best: #f59e0b;
+  --grid: #2a2644;
+  --base: #3f3960;
+  --l0: #2a2646; --l1: #1c4f78; --l2: #1f78ad; --l3: #3aa0d6; --l4: #8ad3f5;
+
+  /* المرحلة 6.5: فئات الأوسمة (لوحة تحققت بـ validate_palette) */
+  --cat-start: #199e70; --cat-streak: #d95926; --cat-hours: #3987e5; --cat-habit: #9085e9; --cat-commit: #d55181;
+  --glow-gold: rgba(245, 158, 11, 0.55);
+
+  /* المرحلة 6.7: عمق وظلال دافئة، غسول لوني للخلفية، ألوان الاحتفال (زخرفية) */
+  --shadow-sm: 0 2px 8px rgba(6, 4, 20, 0.35);
+  --shadow-lift: 0 14px 34px rgba(6, 4, 20, 0.55);
+  --wash-a: rgba(251, 146, 60, 0.10); --wash-b: rgba(167, 139, 250, 0.10);
+  --fx-1: #fcd34d; --fx-2: #fb923c; --fx-3: #f472b6; --fx-4: #a78bfa; --fx-5: #5eead4;
+  /* تدرجات ناعمة: كل زوج توقفين يُختبر تباينه عند الطرفين */
+  --hero-a: #2a1b4d; --hero-b: #5b2a52; --on-hero: #ffffff; --on-hero-2: #f3e8ff;
+  --ring-hero: #fcd34d; --ring-hero-track: rgba(255, 255, 255, 0.25);
+  --card-a: #1d1a30; --card-b: #181529;
+  --grad-primary-a: #0e7490; --grad-primary-b: #155e75;
+  --grad-warning-a: #a16207; --grad-warning-b: #854d0e;
+  --grad-danger-a: #b91c1c; --grad-danger-b: #991b1b;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:where(:not([data-theme="dark"])) {
+    color-scheme: light;
+    --bg: #f8f2e7;
+    --panel: #fffcf6;
+    --border: #e3d7c2;
+    --border-strong: #7d6c56;
+    --text: #2b2218;
+    --muted: #5b4e3f;
+    --faint: #6d5f4e;
+    --ink2: #44392b;
+    --accent: #0b6580;
+    --accent-strong: #0e7490;
+    --btn-primary: #0e7490;
+    --btn-warning: #a16207;
+    --btn-danger: #b91c1c;
+    --on-accent: #ffffff;
+    --good: #15803d;
+    --warn: #b45309;
+    --bad: #b91c1c;
+    --warn-wash: rgba(180, 83, 9, 0.1);
+    --glow: rgba(14, 116, 144, 0.3);
+    --shadow: 0 10px 28px rgba(110, 76, 30, 0.14);
+    --shadow-pop: 0 8px 22px rgba(110, 76, 30, 0.28);
+    --toast-bg: #3b2f21;
+    --toast-fg: #fff8ee;
+    --toast-ok-bg: #166534;
+    --toast-err-bg: #991b1b;
+    --tip-bg: #fffcf6;
+    --st-ok-bg: #dcfce7;      --st-ok-fg: #14532d;      --st-ok-bd: #1a9446;
+    --st-comp-bg: #fef3c7;    --st-comp-fg: #78350f;    --st-comp-bd: #b45309;
+    --st-bad-bg: #ffe4e6;     --st-bad-fg: #881337;     --st-bad-bd: #be123c;
+    --st-frozen-bg: #cffafe;  --st-frozen-fg: #164e63;  --st-frozen-bd: #0891b2;
+    --st-excused-bg: #ede9fe; --st-excused-fg: #4c1d95; --st-excused-bd: #7c3aed;
+    --st-ok-on: #0b1220; --st-comp-on: #ffffff; --st-bad-on: #ffffff; --st-frozen-on: #0b1220; --st-excused-on: #ffffff;
+    --delta-up: #15803d;      --delta-up-bd: #86efac;
+    --delta-down: #854d0e;    --delta-down-bd: #fcd34d;
+    --ring-focus: #2a78d6;
+    --ring-break: #b87a00;
+    --ring-track: #e6d9c2;
+    --c-morning: #b87a00;
+    --c-evening: #6250d6;
+    --c-main: #0369a1;
+    --c-actual: #0369a1;
+    --c-target: #7d6c56;
+    --c-best: #b45309;
+    --grid: #ece1cc;
+    --base: #dccfb7;
+    --l0: #ece1cc; --l1: #78aae9; --l2: #4a8ce0; --l3: #256abf; --l4: #104281;
+
+    /* المرحلة 6.5: فئات الأوسمة (لوحة تحققت بـ validate_palette) */
+    --cat-start: #0d8068; --cat-streak: #c2410c; --cat-hours: #2a78d6; --cat-habit: #6250d6; --cat-commit: #be185d;
+    --glow-gold: rgba(180, 83, 9, 0.4);
+
+    /* المرحلة 6.7: عمق وظلال دافئة، غسول لوني للخلفية، ألوان الاحتفال (زخرفية) */
+    --shadow-sm: 0 2px 8px rgba(110, 76, 30, 0.1);
+    --shadow-lift: 0 14px 34px rgba(110, 76, 30, 0.22);
+    --wash-a: rgba(245, 158, 11, 0.14); --wash-b: rgba(244, 114, 182, 0.10);
+    --fx-1: #f59e0b; --fx-2: #ea580c; --fx-3: #db2777; --fx-4: #7c3aed; --fx-5: #0d9488;
+    /* تدرجات ناعمة: كل زوج توقفين يُختبر تباينه عند الطرفين */
+    --hero-a: #fde8c9; --hero-b: #f9d4cf; --on-hero: #2b2218; --on-hero-2: #4e4132;
+    --ring-hero: #b45309; --ring-hero-track: rgba(43, 34, 24, 0.15);
+    --card-a: #fffcf6; --card-b: #fbf1df;
+    --grad-primary-a: #0e7490; --grad-primary-b: #155e75;
+    --grad-warning-a: #a16207; --grad-warning-b: #854d0e;
+    --grad-danger-a: #b91c1c; --grad-danger-b: #991b1b;
+  }
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f8f2e7;
+  --panel: #fffcf6;
+  --border: #e3d7c2;
+  --border-strong: #7d6c56;
+  --text: #2b2218;
+  --muted: #5b4e3f;
+  --faint: #6d5f4e;
+  --ink2: #44392b;
+  --accent: #0b6580;
+  --accent-strong: #0e7490;
+  --btn-primary: #0e7490;
+  --btn-warning: #a16207;
+  --btn-danger: #b91c1c;
+  --on-accent: #ffffff;
+  --good: #15803d;
+  --warn: #b45309;
+  --bad: #b91c1c;
+  --warn-wash: rgba(180, 83, 9, 0.1);
+  --glow: rgba(14, 116, 144, 0.3);
+  --shadow: 0 10px 28px rgba(110, 76, 30, 0.14);
+  --shadow-pop: 0 8px 22px rgba(110, 76, 30, 0.28);
+  --toast-bg: #3b2f21;
+  --toast-fg: #fff8ee;
+  --toast-ok-bg: #166534;
+  --toast-err-bg: #991b1b;
+  --tip-bg: #fffcf6;
+  --st-ok-bg: #dcfce7;      --st-ok-fg: #14532d;      --st-ok-bd: #1a9446;
+  --st-comp-bg: #fef3c7;    --st-comp-fg: #78350f;    --st-comp-bd: #b45309;
+  --st-bad-bg: #ffe4e6;     --st-bad-fg: #881337;     --st-bad-bd: #be123c;
+  --st-frozen-bg: #cffafe;  --st-frozen-fg: #164e63;  --st-frozen-bd: #0891b2;
+  --st-excused-bg: #ede9fe; --st-excused-fg: #4c1d95; --st-excused-bd: #7c3aed;
+  --st-ok-on: #0b1220; --st-comp-on: #ffffff; --st-bad-on: #ffffff; --st-frozen-on: #0b1220; --st-excused-on: #ffffff;
+  --delta-up: #15803d;      --delta-up-bd: #86efac;
+  --delta-down: #854d0e;    --delta-down-bd: #fcd34d;
+  --ring-focus: #2a78d6;
+  --ring-break: #b87a00;
+  --ring-track: #e6d9c2;
+  --c-morning: #b87a00;
+  --c-evening: #6250d6;
+  --c-main: #0369a1;
+  --c-actual: #0369a1;
+  --c-target: #7d6c56;
+  --c-best: #b45309;
+  --grid: #ece1cc;
+  --base: #dccfb7;
+  --l0: #ece1cc; --l1: #78aae9; --l2: #4a8ce0; --l3: #256abf; --l4: #104281;
+  /* المرحلة 6.5: فئات الأوسمة (لوحة تحققت بـ validate_palette) */
+  --cat-start: #0d8068; --cat-streak: #c2410c; --cat-hours: #2a78d6; --cat-habit: #6250d6; --cat-commit: #be185d;
+  --glow-gold: rgba(180, 83, 9, 0.4);
+
+  /* المرحلة 6.7: عمق وظلال دافئة، غسول لوني للخلفية، ألوان الاحتفال (زخرفية) */
+  --shadow-sm: 0 2px 8px rgba(110, 76, 30, 0.1);
+  --shadow-lift: 0 14px 34px rgba(110, 76, 30, 0.22);
+  --wash-a: rgba(245, 158, 11, 0.14); --wash-b: rgba(244, 114, 182, 0.10);
+  --fx-1: #f59e0b; --fx-2: #ea580c; --fx-3: #db2777; --fx-4: #7c3aed; --fx-5: #0d9488;
+  /* تدرجات ناعمة: كل زوج توقفين يُختبر تباينه عند الطرفين */
+  --hero-a: #fde8c9; --hero-b: #f9d4cf; --on-hero: #2b2218; --on-hero-2: #4e4132;
+  --ring-hero: #b45309; --ring-hero-track: rgba(43, 34, 24, 0.15);
+  --card-a: #fffcf6; --card-b: #fbf1df;
+  --grad-primary-a: #0e7490; --grad-primary-b: #155e75;
+  --grad-warning-a: #a16207; --grad-warning-b: #854d0e;
+  --grad-danger-a: #b91c1c; --grad-danger-b: #991b1b;
+}

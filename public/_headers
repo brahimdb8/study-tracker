@@ -1,0 +1,12 @@
+# Netlify: الـ Service Worker والـ manifest لا يُخزَّنان طويلاً (يجب أن يرى المتصفح كل نسخة جديدة فوراً)
+/sw.js
+  Cache-Control: no-cache
+  Service-Worker-Allowed: /
+/manifest.webmanifest
+  Cache-Control: no-cache
+  Content-Type: application/manifest+json
+# الصفحات تُراجَع في كل زيارة (الأصول المبصومة بالـ hash تُخزَّن طويلاً)
+/*.html
+  Cache-Control: no-cache
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

@@ -1,0 +1,43 @@
+/* تقرير الطباعة: ثابت فاتح ومناسب للحبر مهما كان ثيم التطبيق (لا يستعمل tokens.css عمداً). */
+:root { color-scheme: light; --ink: #111827; --muted: #4b5563; --line: #d1d5db; --soft: #f3f4f6; --accent: #0369a1; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #e5e7eb; color: var(--ink); font-family: system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif; font-size: 13px; line-height: 1.6; }
+.toolbar { position: sticky; top: 0; z-index: 5; display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; padding: 0.7rem 1rem; background: #fff; border-bottom: 1px solid var(--line); }
+.tb-btn { font: inherit; font-weight: bold; border: 1px solid var(--accent); color: var(--accent); background: #fff; border-radius: 6px; padding: 0.4rem 0.9rem; cursor: pointer; text-decoration: none; }
+.tb-primary { background: var(--accent); color: #fff; }
+.tb-hint { color: var(--muted); font-size: 12px; }
+.sheet { max-width: 210mm; margin: 1rem auto; padding: 14mm; background: #fff; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15); }
+.report-head { border-bottom: 2px solid var(--ink); margin-bottom: 0.8rem; padding-bottom: 0.4rem; }
+h1 { margin: 0; font-size: 22px; }
+h2 { font-size: 15px; margin: 1.2rem 0 0.4rem; break-after: avoid; }
+.range { margin: 0.2rem 0 0; font-weight: bold; }
+.generated, .empty, .status-line { color: var(--muted); margin: 0.2rem 0; }
+.stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.stat { border: 1px solid var(--line); border-radius: 6px; padding: 8px; text-align: center; background: var(--soft); }
+.stat-value { font-size: 15px; font-weight: bold; }
+.stat-label { font-size: 11px; color: var(--muted); }
+.tbl { width: 100%; border-collapse: collapse; }
+.tbl th, .tbl td { border: 1px solid var(--line); padding: 4px 6px; text-align: start; vertical-align: top; }
+.tbl th { background: var(--soft); font-size: 12px; }
+.tbl thead { display: table-header-group; }
+.tbl tr { break-inside: avoid; }
+.tbl .note { max-width: 60mm; overflow-wrap: anywhere; }
+.day-sum td { background: var(--soft); font-weight: bold; }
+.day-group { break-inside: auto; }
+.bar-cell { width: 28%; }
+.bar { display: block; height: 10px; background: var(--accent); border-radius: 3px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+@page { size: A4; margin: 12mm; }
+@media print {
+  body { background: #fff; }
+  .no-print { display: none !important; }
+  .sheet { margin: 0; padding: 0; max-width: none; box-shadow: none; }
+}
+@media (max-width: 640px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .sheet { padding: 10px; }
+  /* جدول الجلسات يتجاوز عرض الجوال: خط أصغر وحشوة أقل، والتاريخ يلتف عند الشرطات بدل فرض عرض أدنى */
+  .tbl { font-size: 11.5px; }
+  .tbl th, .tbl td { padding: 3px 3px; overflow-wrap: break-word; }
+  .sheet .tbl.sessions td:first-child { white-space: normal; }
+}
+.tbl.sessions td:first-child { white-space: nowrap; }

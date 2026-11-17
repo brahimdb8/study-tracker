@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#f8f2e7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#13111f" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <title>الإعدادات ⚙️</title>
+  <script>try{var d=document.documentElement,t=localStorage.getItem("studyTracker:theme");if(t==="light"||t==="dark")d.setAttribute("data-theme",t);if(localStorage.getItem("studyTracker:motion")==="off")d.setAttribute("data-motion","off")}catch(e){}</script>
+</head>
+<body class="has-shell">
+  <main class="container narrow" id="main">
+    <h1>الإعدادات ⚙️</h1>
+
+    <!-- الخطة الأسبوعية -->
+    <section class="card pad-lg">
+      <h3>🎯 الخطة الأسبوعية</h3>
+      <p class="settings-intro" id="plan-intro"></p>
+      <div id="pending-banner" class="pending-banner" style="display: none;">
+        <span id="pending-text"></span>
+        <button class="btn btn-secondary btn-sm" id="cancel-pending" type="button">إلغاء التعديل المجدول</button>
+      </div>
+      <table class="plan-table">
+        <thead>
+          <tr><th>اليوم</th><th>صباحاً (س)</th><th>مساءً (س)</th><th>المجموع</th></tr>
+        </thead>
+        <tbody id="plan-rows"></tbody>
+      </table>
+      <div class="weekly-row">
+        <label for="plan-weekly"><strong>الهدف الأسبوعي (س):</strong></label>
+        <input type="number" id="plan-weekly" min="0" max="168" step="0.25" placeholder="تلقائي">
+        <span class="hint" id="plan-weekly-hint"></span>
+      </div>
+      <p class="settings-intro" style="margin-top: 0.6rem;">
+        اتركه فارغاً ليكون الهدف الأسبوعي = مجموع الأهداف اليومية. إذا حدّدته فهو الحدّ الذي يُعوَّض به اليوم الناقص من فائض الأسبوع، وتُطرح منه أهداف الأيام الاستثنائية.
+      </p>
+      <div class="settings-actions">
+        <button class="btn btn-primary" id="save-plan" type="button">جدولة التعديل 🗓️</button>
+      </div>
+    </section>
+
+    <!-- المواد -->
+    <section class="card pad-lg">
+      <h3>📚 المواد الدراسية</h3>
+      <p class="settings-intro">أضف موادك لتنسب كل جلسة إلى مادتها. المادة التي عليها جلسات لا تُحذف بل تُؤرشف، فتبقى جلساتها محفوظة وتختفي من قوائم الاختيار.</p>
+      <form id="subject-form" novalidate>
+        <div class="inline-fields">
+          <input type="text" id="subject-name" maxlength="30" placeholder="اسم المادة" aria-label="اسم المادة">
+          <button class="btn btn-primary" type="submit">إضافة ➕</button>
+        </div>
+        <div class="swatches" id="subject-swatches" style="margin-top: 0.6rem;" role="radiogroup" aria-label="لون المادة"></div>
+      </form>
+      <div class="list-stack" id="subjects-list"></div>
+    </section>
+
+    <!-- الأيام الاستثنائية -->
+    <section class="card pad-lg">
+      <h3>🏖️ الأيام الاستثنائية</h3>
+      <p class="settings-intro">إجازة أو مرض أو امتحان أو راحة: لا تُحسب تقصيراً، ولا تدخل في أهداف الأسبوع والشهر، ولا تقطع السلسلة. يمكنك تحديد مدى في المستقبل أو في الماضي.</p>
+      <form id="dayoff-form" novalidate>
+        <div class="form-grid">
+          <div>
+            <label for="dayoff-form-type">النوع</label>
+            <select id="dayoff-form-type"></select>
+          </div>
+          <div>
+            <label for="dayoff-form-note">ملاحظة (اختياري)</label>
+            <input type="text" id="dayoff-form-note" maxlength="100" placeholder="مثلاً: امتحان الفيزياء">
+          </div>
+          <div>
+            <label for="dayoff-from">من</label>
+            <input type="date" id="dayoff-from">
+          </div>
+          <div>
+            <label for="dayoff-to">إلى</label>
+            <input type="date" id="dayoff-to">
+          </div>
+        </div>
+        <button class="btn btn-primary" type="submit">إضافة مدى استثنائي ➕</button>
+      </form>
+      <div class="list-stack" id="dayoffs-list"></div>
+    </section>
+
+    <!-- الامتحانات -->
+    <section class="card pad-lg" id="exams">
+      <h3>📝 الامتحانات القادمة</h3>
+      <p class="settings-intro">أضف امتحاناتك ليعرض لك الرئيسي عدّاً تنازلياً لأقربها. الامتحان بعد تاريخه يختفي من البطاقة تلقائياً.</p>
+      <form id="exam-form" novalidate>
+        <div class="form-grid">
+          <div>
+            <label for="exam-name">اسم الامتحان</label>
+            <input type="text" id="exam-name" maxlength="40" placeholder="مثلاً: نهائي الفيزياء">
+          </div>
+          <div>
+            <label for="exam-date">التاريخ</label>
+            <input type="date" id="exam-date">
+          </div>
+        </div>
+        <button class="btn btn-primary" type="submit">إضافة امتحان ➕</button>
+      </form>
+      <div class="list-stack" id="exams-list"></div>
+    </section>
+
+    <!-- الجولة التعريفية -->
+    <section class="card pad-lg" id="tour">
+      <h3>🧭 الجولة التعريفية</h3>
+      <p class="settings-intro">جولة مصوّرة من 7 خطوات تشرح المواد والخطة والمؤقت والتقويم والنقاط والأوسمة والامتحانات والإعدادات. يمكنك إعادتها في أي وقت.</p>
+      <button class="btn btn-primary" id="tour-replay" type="button">إعادة عرض الجولة التعريفية</button>
+    </section>
+
+    <!-- التطبيق والعمل دون اتصال -->
+    <section class="card pad-lg" id="pwa">
+      <h3>📲 التطبيق والعمل دون اتصال</h3>
+      <p class="settings-intro" id="pwa-status">جارٍ التحقق من جاهزية العمل دون اتصال…</p>
+      <p class="settings-intro" id="pwa-version"></p>
+      <p class="settings-intro" id="pwa-install-hint"></p>
+      <div class="backup-actions">
+        <button class="btn btn-primary" id="pwa-install-btn" type="button" style="display: none;">📲 تثبيت التطبيق</button>
+        <button class="btn btn-secondary" id="pwa-update-btn" type="button">🔄 التحقق من وجود تحديث</button>
+      </div>
+    </section>
+
+    <!-- الحركة -->
+    <section class="card pad-lg" id="motion">
+      <h3>✨ الحركة والاحتفالات</h3>
+      <p class="settings-intro">الانتقالات اللطيفة والاحتفال عند إتمام هدفك أو فتح وسام. نحترم دائماً إعداد «تقليل الحركة» في نظامك، وهذا المفتاح يعطّلها يدوياً على هذا الجهاز فقط.</p>
+      <label class="check-row" for="motion-off">
+        <input type="checkbox" id="motion-off">
+        <span>تعطيل الحركة والاحتفالات على هذا الجهاز</span>
+      </label>
+      <p class="hint" id="motion-system-note"></p>
+    </section>
+
+    <!-- إحصاءات الزيارات (تظهر فقط إن بُني الموقع بمفتاح تحليلات) -->
+    <section class="card pad-lg" id="visitor-stats" hidden>
+      <h3>📈 إحصاءات الزيارات</h3>
+      <p class="settings-intro">يقيس مطوّر الموقع عدد الزيارات وأي الصفحات تُفتح، دون كوكيز ودون إرسال أي من جلساتك أو موادك أو بياناتك الدراسية. لا تعمل دون اتصال، وتحترم إعداد «عدم التتبع» في متصفحك.</p>
+      <label class="check-row" for="visitor-stats-off">
+        <input type="checkbox" id="visitor-stats-off">
+        <span>إيقاف إحصاءات الزيارات على هذا الجهاز</span>
+      </label>
+    </section>
+
+    <!-- تجميد السلسلة -->
+    <section class="card pad-lg">
+      <h3>❄️ تجميد السلسلة</h3>
+      <p class="settings-intro">إذا فاتك يوم وكانت لديك سلسلة قائمة، يُجمَّد اليوم تلقائياً فلا تنقطع السلسلة (ولا تزيد به). هذا عدد الأيام المسموح تجميدها في كل شهر؛ اجعله 0 لتعطيل الميزة.</p>
+      <div class="inline-fields">
+        <input type="number" id="freezes-input" min="0" max="10" step="1" aria-label="أيام التجميد في الشهر">
+        <button class="btn btn-secondary" id="save-freezes" type="button">حفظ</button>
+      </div>
+    </section>
+
+    <!-- المؤقت -->
+    <section class="card pad-lg">
+      <h3>⏱️ المؤقت (بومودورو)</h3>
+      <p class="settings-intro">تركيز ثم استراحة قصيرة، وبعد عدد من جلسات التركيز تأتي استراحة طويلة. يسري التغيير من الطور التالي ولا يمس الجلسة الجارية. الاستراحات لا تُسجَّل كجلسات.</p>
+      <div class="form-grid">
+        <div>
+          <label for="timer-focus">مدة التركيز (دقيقة)</label>
+          <input type="number" id="timer-focus" step="1" inputmode="numeric">
+        </div>
+        <div>
+          <label for="timer-short">الاستراحة القصيرة (دقيقة)</label>
+          <input type="number" id="timer-short" step="1" inputmode="numeric">
+        </div>
+        <div>
+          <label for="timer-long">الاستراحة الطويلة (دقيقة)</label>
+          <input type="number" id="timer-long" step="1" inputmode="numeric">
+        </div>
+        <div>
+          <label for="timer-every">استراحة طويلة بعد (جلسات)</label>
+          <input type="number" id="timer-every" step="1" inputmode="numeric">
+        </div>
+      </div>
+      <label class="check-row"><input type="checkbox" id="timer-sound"> نغمة عند نهاية كل طور</label>
+      <label class="check-row"><input type="checkbox" id="timer-notify"> إشعار المتصفح عند نهاية كل طور</label>
+      <p class="hint" id="timer-notify-hint"></p>
+      <div class="settings-actions">
+        <button class="btn btn-primary" id="save-timer" type="button">حفظ إعدادات المؤقت</button>
+        <button class="btn btn-secondary" id="timer-notify-permission" type="button" style="display: none;">السماح بالإشعارات 🔔</button>
+      </div>
+    </section>
+
+    <!-- بداية التتبع -->
+    <section class="card pad-lg">
+      <h3>📅 بداية التتبع</h3>
+      <p class="settings-intro">الأيام قبل هذا التاريخ لا تُحسب مقصّرة ولا تدخل في الإحصاءات.</p>
+      <div class="inline-fields">
+        <input type="date" id="tracking-start" aria-label="بداية التتبع">
+        <button class="btn btn-secondary" id="save-tracking-start" type="button">حفظ</button>
+      </div>
+    </section>
+
+    <!-- النسخ الاحتياطي -->
+    <section class="card pad-lg">
+      <h3>📦 النسخ الاحتياطي</h3>
+      <p class="settings-intro">بياناتك محفوظة في هذا المتصفح فقط (لا تُرسَل إلى أي خادم). صدّر نسخة بين وقت وآخر. يقبل الاستيراد نسخ هذا الإصدار والإصدارات السابقة، وتُحفظ نسخة من بياناتك الحالية قبل أي استيراد.</p>
+      <div class="backup-actions">
+        <button class="btn btn-secondary" id="export-btn" type="button">📦 تصدير نسخة احتياطية</button>
+        <button class="btn btn-secondary" id="import-btn" type="button">📥 استيراد نسخة</button>
+        <input type="file" id="import-file" accept="application/json,.json" style="display: none;">
+      </div>
+      <div class="backup-actions" id="restore-backup-row" style="display: none; margin-top: 0.6rem;">
+        <button class="btn btn-secondary" id="restore-backup-btn" type="button">↩️ استعادة النسخة السابقة (قبل آخر استيراد أو استعادة)</button>
+      </div>
+      <p class="settings-intro" id="storage-status" style="margin-top: 0.9rem;"></p>
+      <div class="backup-actions" id="legacy-clear-row" style="display: none;">
+        <button class="btn btn-secondary" id="legacy-clear-btn" type="button">🧹 حذف النسخة القديمة من المتصفح</button>
+      </div>
+    </section>
+
+    <!-- تصدير للجداول والطباعة -->
+    <section class="card pad-lg">
+      <h3>📤 تصدير للجداول والطباعة</h3>
+      <p class="settings-intro">CSV يُفتح في Excel وGoogle Sheets، وتقرير الطباعة يُحفظ PDF من نافذة طباعة المتصفح (اختر «حفظ كـ PDF»).</p>
+      <div class="form-grid">
+        <div>
+          <label for="export-range">النطاق</label>
+          <select id="export-range">
+            <option value="month">هذا الشهر</option>
+            <option value="all">كل البيانات</option>
+            <option value="custom">مدى مخصص</option>
+          </select>
+        </div>
+        <div>
+          <label for="export-delimiter">الفاصل في CSV</label>
+          <select id="export-delimiter">
+            <option value=";">فاصلة منقوطة ;‎ (Excel بالعربية/الفرنسية)</option>
+            <option value=",">فاصلة ,‎ (Google Sheets والمعيار)</option>
+          </select>
+        </div>
+        <div class="export-custom">
+          <label for="export-from">من</label>
+          <input type="date" id="export-from">
+        </div>
+        <div class="export-custom">
+          <label for="export-to">إلى</label>
+          <input type="date" id="export-to">
+        </div>
+      </div>
+      <p class="hint" id="export-summary" role="status"></p>
+      <div class="backup-actions">
+        <button class="btn btn-secondary" id="export-csv-sessions" type="button">📄 CSV: الجلسات</button>
+        <button class="btn btn-secondary" id="export-csv-days" type="button">📅 CSV: ملخص يومي</button>
+        <button class="btn btn-secondary" id="export-print" type="button">🖨️ تقرير للطباعة / PDF</button>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/src/pages/settings.js"></script>
+</body>
+</html>

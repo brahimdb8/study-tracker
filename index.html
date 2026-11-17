@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#f8f2e7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#13111f" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <title>متتبع المذاكرة والاستمرارية 📚</title>
+  <script>try{var d=document.documentElement,t=localStorage.getItem("studyTracker:theme");if(t==="light"||t==="dark")d.setAttribute("data-theme",t);if(localStorage.getItem("studyTracker:motion")==="off")d.setAttribute("data-motion","off")}catch(e){}</script>
+</head>
+<body class="has-shell">
+  <main class="container home" id="main">
+    <section class="hero" id="hero" aria-label="لوحة اليوم"></section>
+
+    <!-- العد التنازلي للامتحان القادم -->
+    <section class="card exam-card" id="exam-card" aria-label="العد التنازلي للامتحان"></section>
+
+    <div class="home-grid">
+    <div class="home-col">
+    <!-- ملخص السلسلة وإنجاز اليوم -->
+    <div class="stats-overview">
+      <div class="stat-card">
+        <div class="stat-label">سلسلة الاستمرارية (Streak)</div>
+        <div class="stat-value" id="current-streak" style="color: var(--good);">0 أيام 🔥</div>
+        <div class="stat-sub" id="freeze-info"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">إنجاز اليوم المحدد</div>
+        <div class="stat-value" id="day-target-status" style="color: var(--accent);">0د / 0د</div>
+      </div>
+    </div>
+
+    <!-- تقدّم الأسبوع -->
+    <section class="card week-card" aria-label="تقدّم الأسبوع">
+      <h3 id="week-title">تقدّم الأسبوع</h3>
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="week-progress" aria-label="تقدم الهدف الأسبوعي">
+        <div class="progress-fill" id="week-bar" style="width: 0%;"></div>
+      </div>
+      <p class="week-text" id="week-text"></p>
+    </section>
+
+    <!-- التقويم -->
+    <section class="card" aria-label="التقويم">
+      <div class="calendar-header">
+        <button class="btn btn-secondary btn-sm" id="prev-month" type="button">◀ السابق</button>
+        <span class="calendar-title" id="calendar-month-year" aria-live="polite"></span>
+        <button class="btn btn-secondary btn-sm" id="next-month" type="button">التالي ▶</button>
+      </div>
+      <div id="calendar-grid" class="calendar-grid"></div>
+      <div class="color-legend" id="calendar-legend" aria-label="دليل حالات الأيام"></div>
+    </section>
+
+    </div>
+    <div class="home-col">
+    <!-- المؤقت (بومودورو) -->
+    <section class="card pad-lg timer-section" id="timer-section" aria-label="مؤقت التركيز">
+      <h3>مؤقت التركيز (بومودورو) ⏱️</h3>
+      <div class="timer-subject">
+        <label for="timer-subject">المادة</label>
+        <select id="timer-subject"></select>
+      </div>
+      <div class="timer-ring-wrap">
+        <div id="timer-ring"></div>
+        <div class="timer-center">
+          <div class="timer-display" id="timer-display" role="timer">25:00</div>
+          <div class="timer-phase" id="timer-phase">🎯 جاهز للتركيز</div>
+        </div>
+      </div>
+      <div class="timer-cycle">
+        <div class="cycle-dots" id="timer-dots" aria-hidden="true"></div>
+        <div class="timer-cycle-text" id="timer-cycle-text"></div>
+      </div>
+      <div class="timer-controls">
+        <button class="btn btn-primary" id="start-timer-btn" type="button">بدء التركيز 🚀</button>
+        <button class="btn btn-warning" id="pause-timer-btn" type="button" style="display: none;">إيقاف مؤقت ⏸️</button>
+        <button class="btn btn-secondary" id="stop-timer-btn" type="button" style="display: none;">إنهاء وحفظ ⏹️</button>
+      </div>
+      <div class="timer-info" id="timer-info">
+        * بعد التركيز تبدأ الاستراحة تلقائياً، وبعدها ينتظر المؤقت بدءك للجلسة التالية. الاستراحات لا تُسجَّل.<br>
+        * «إنهاء وحفظ» يحفظ الدقائق الكاملة المنقضية (دقيقة فأكثر). الإيقاف المؤقت لا يحفظ شيئاً.<br>
+        * تُنسب الجلسة إلى يوم وفترة وقت بدئها، ويُستعاد المؤقت إن أغلقت الصفحة. المدد من <a href="settings.html">الإعدادات</a>.
+      </div>
+    </section>
+
+    <!-- جلسات اليوم المحدد -->
+    <section class="card pad-lg" id="session-section" aria-label="جلسات اليوم">
+      <p class="entry-title" id="entry-date"></p>
+      <p class="target-hint" id="day-target-hint"></p>
+      <p class="day-status" id="day-status-line"></p>
+
+      <div class="dayoff-row" id="dayoff-row">
+        <select id="dayoff-type" aria-label="نوع اليوم الاستثنائي"></select>
+        <button class="btn btn-secondary btn-sm" id="dayoff-apply" type="button">تحديد هذا اليوم كاستثنائي</button>
+        <button class="btn btn-secondary btn-sm" id="dayoff-remove" type="button" style="display: none;">إزالة الاستثناء عن هذا اليوم</button>
+      </div>
+
+      <ul class="session-list" id="sessions-list"></ul>
+
+      <form class="session-form" id="session-form" novalidate>
+        <div class="form-title" id="session-form-title">إضافة جلسة يدوياً</div>
+        <div class="form-row">
+          <input type="number" id="session-hours" class="num-input" min="0" max="24" value="0" aria-label="ساعات"> <span class="unit">س</span>
+          <input type="number" id="session-mins" class="num-input" min="0" max="59" value="0" aria-label="دقائق"> <span class="unit">د</span>
+          <select id="session-period" aria-label="الفترة">
+            <option value="morning">صباحاً</option>
+            <option value="evening">مساءً</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="session-start" class="unit" style="white-space:nowrap">وقت البدء (اختياري)</label>
+          <input type="time" id="session-start" class="grow" aria-describedby="session-start-hint">
+        </div>
+        <p class="hint" id="session-start-hint" style="margin:0 0 .5rem">يستخدمه تحليل «ساعات يومك الأكثر إنتاجاً». يحدّد الفترة تلقائياً.</p>
+        <div class="form-row">
+          <select id="session-subject" class="grow" aria-label="المادة"></select>
+        </div>
+        <div class="form-row">
+          <input type="text" id="session-note" class="grow" maxlength="200" placeholder="ملاحظة (اختياري): ماذا أنجزت؟" aria-label="ملاحظة">
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" id="session-submit" type="submit">إضافة الجلسة ➕</button>
+          <button class="btn btn-secondary" id="session-cancel" type="button" style="display: none;">إلغاء التعديل</button>
+        </div>
+      </form>
+
+      <div class="quality-box">
+        <label class="field-label" for="day-quality-select" style="text-align: center;">تقييم جودة التركيز لهذا اليوم (الكيف):</label>
+        <select id="day-quality-select"></select>
+      </div>
+    </section>
+    </div>
+    </div>
+  </main>
+
+  <script type="module" src="/src/pages/home.js"></script>
+</body>
+</html>

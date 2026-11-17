@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#f8f2e7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#13111f" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <title>تقرير المذاكرة</title>
+</head>
+<body>
+  <div class="toolbar no-print">
+    <button type="button" id="print-btn" class="tb-btn tb-primary">🖨️ طباعة / حفظ PDF</button>
+    <a href="settings.html" class="tb-btn">← رجوع للإعدادات</a>
+    <span class="tb-hint">في نافذة الطباعة اختر الوجهة «حفظ كـ PDF».</span>
+  </div>
+
+  <main class="sheet" id="report" aria-live="polite">
+    <p id="loading">جارٍ تجهيز التقرير…</p>
+  </main>
+
+  <script type="module" src="/src/pages/print.js"></script>
+</body>
+</html>

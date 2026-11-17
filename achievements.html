@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#f8f2e7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#13111f" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <title>الأوسمة 🏅</title>
+  <script>try{var d=document.documentElement,t=localStorage.getItem("studyTracker:theme");if(t==="light"||t==="dark")d.setAttribute("data-theme",t);if(localStorage.getItem("studyTracker:motion")==="off")d.setAttribute("data-motion","off")}catch(e){}</script>
+</head>
+<body class="has-shell">
+  <main class="container" id="main">
+    <h1>الأوسمة 🏅</h1>
+    <div id="ach-level"></div>
+    <p class="settings-intro" id="ach-summary"></p>
+    <div id="ach-groups"></div>
+  </main>
+
+  <script type="module" src="/src/pages/achievements.js"></script>
+</body>
+</html>

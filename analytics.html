@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#f8f2e7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#13111f" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <title>التحليلات</title>
+  <script>try{var d=document.documentElement,t=localStorage.getItem("studyTracker:theme");if(t==="light"||t==="dark")d.setAttribute("data-theme",t);if(localStorage.getItem("studyTracker:motion")==="off")d.setAttribute("data-motion","off")}catch(e){}</script>
+</head>
+<body class="has-shell">
+  <main class="container dash" id="main">
+
+    <div class="dash-top">
+      <h1>التحليلات</h1>
+      <button class="btn btn-secondary btn-sm" id="share-card-btn" type="button">🖼️ بطاقة إنجازاتي</button>
+      <div class="month-stepper" id="month-stepper">
+        <button class="icon-btn" id="prev-month" type="button" aria-label="الشهر السابق">›</button>
+        <span class="calendar-title" id="analytics-month-year" aria-live="polite"></span>
+        <button class="icon-btn" id="next-month" type="button" aria-label="الشهر التالي">‹</button>
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="أقسام التحليلات">
+      <button class="tab" role="tab" id="tab-month" aria-controls="panel-month" aria-selected="true" type="button">الشهر</button>
+      <button class="tab" role="tab" id="tab-year" aria-controls="panel-year" aria-selected="false" tabindex="-1" type="button">السنة</button>
+      <button class="tab" role="tab" id="tab-subjects" aria-controls="panel-subjects" aria-selected="false" tabindex="-1" type="button">المواد والعادات</button>
+    </div>
+
+    <section id="panel-month" role="tabpanel" aria-labelledby="tab-month"></section>
+    <section id="panel-year" role="tabpanel" aria-labelledby="tab-year" hidden></section>
+    <section id="panel-subjects" role="tabpanel" aria-labelledby="tab-subjects" hidden></section>
+  </main>
+
+  <script type="module" src="/src/pages/analytics.js"></script>
+</body>
+</html>
