@@ -10,14 +10,19 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <title>تقرير المذاكرة</title>
   <style>
-  a[href*="netlify.com"][style*="fixed"],
-  div[style*="z-index: 2147483647"] {
+  body > div:not(#app):not([class]):not([id]),
+  iframe[src*="netlify"],
+  [data-netlify-deploy-id] {
     display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
   }
 </style>
+<script>
+  new MutationObserver(() => {
+    document.querySelectorAll('body > *').forEach(el => {
+      if (el.shadowRoot && el.shadowRoot.innerHTML.includes('netlify')) el.remove();
+    });
+  }).observe(document.documentElement, { childList: true, subtree: true });
+</script>
 </head>
 <body>
   <div class="toolbar no-print">

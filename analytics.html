@@ -10,15 +10,20 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <title>التحليلات</title>
   <script>try{var d=document.documentElement,t=localStorage.getItem("studyTracker:theme");if(t==="light"||t==="dark")d.setAttribute("data-theme",t);if(localStorage.getItem("studyTracker:motion")==="off")d.setAttribute("data-motion","off")}catch(e){}</script>
-  <style>
-  a[href*="netlify.com"][style*="fixed"],
-  div[style*="z-index: 2147483647"] {
+ <style>
+  body > div:not(#app):not([class]):not([id]),
+  iframe[src*="netlify"],
+  [data-netlify-deploy-id] {
     display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
   }
 </style>
+<script>
+  new MutationObserver(() => {
+    document.querySelectorAll('body > *').forEach(el => {
+      if (el.shadowRoot && el.shadowRoot.innerHTML.includes('netlify')) el.remove();
+    });
+  }).observe(document.documentElement, { childList: true, subtree: true });
+</script>
 </head>
 <body class="has-shell">
   <main class="container dash" id="main">
